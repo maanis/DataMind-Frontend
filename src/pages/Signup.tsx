@@ -4,11 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ThemeProvider } from "next-themes";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Loader2, Eye, EyeOff, Layers, ArrowRight, Check, X as XIcon } from "lucide-react";
+import { Loader2, Eye, EyeOff, Layers, ArrowRight, X as XIcon } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-
-const API_BASE = import.meta.env.VITE_API_BASE || "/api";
+import { API_BASE_URL } from "@/config/api";
 
 export function Signup() {
   const [form, setForm] = useState({ name:"", email:"", password:"", confirmPassword:"" });
@@ -29,7 +28,7 @@ export function Signup() {
     if(form.password !== form.confirmPassword){ toast.error("Passwords don't match."); return; }
     setLoading(true);
     try{
-      const res = await fetch(`${API_BASE}/auth/register`,{
+      const res = await fetch(`${API_BASE_URL}/api/auth/register`,{
         method:"POST", headers:{"Content-Type":"application/json"},
         body:JSON.stringify({ name:form.name, email:form.email, password:form.password }),
       });

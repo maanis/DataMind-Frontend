@@ -8,8 +8,7 @@ import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useWorkspaces, useCreateWorkspace } from "@/hooks/useWorkspaces";
-
-const API_BASE = import.meta.env.VITE_API_BASE || "/api";
+import { API_BASE_URL } from "@/config/api";
 
 /* ── Animated counter hook ── */
 function useCountUp(target: number, trigger: boolean, duration = 1100) {
@@ -88,9 +87,9 @@ export function DashboardView() {
       const today = new Date(); today.setHours(0,0,0,0);
       for(const ws of workspaces){
         try{
-          const dr = await fetch(`${API_BASE}/workspace/${ws.workspaceId}/documents`,{headers:{"Authorization":`Bearer ${token}`}});
+          const dr = await fetch(`${API_BASE_URL}/api/workspace/${ws.workspaceId}/documents`,{headers:{"Authorization":`Bearer ${token}`}});
           if(dr.ok){ const d=await dr.json(); docs+=(d.documents||[]).length; }
-          const mr = await fetch(`${API_BASE}/query/memory/${ws.workspaceId}`,{headers:{"Authorization":`Bearer ${token}`}});
+          const mr = await fetch(`${API_BASE_URL}/api/query/memory/${ws.workspaceId}`,{headers:{"Authorization":`Bearer ${token}`}});
           if(mr.ok){
             const m=await mr.json();
             const msgs=(m.memory?.messages||[]).filter((x:any)=>x.role==="user");

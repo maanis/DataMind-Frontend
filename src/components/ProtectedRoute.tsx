@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-
-const API_BASE = import.meta.env.VITE_API_BASE || "/api";
+import { API_BASE_URL } from "@/config/api";
 
 interface ProtectedRouteProps {
     children: React.ReactNode;
@@ -24,7 +23,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
             }
 
             try {
-                const response = await fetch(`${API_BASE}/auth/verify`, {
+                const response = await fetch(`${API_BASE_URL}/api/auth/verify`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

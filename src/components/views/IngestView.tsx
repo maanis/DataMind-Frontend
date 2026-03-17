@@ -7,8 +7,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import * as XLSX from 'xlsx';
 import { useWorkspaces } from "@/hooks/useWorkspaces";
-
-const API_BASE = import.meta.env.VITE_API_BASE || "/api";
+import { API_BASE_URL } from "@/config/api";
 
 type IngestMode = "text" | "json" | "excel" | "upload";
 type IngestStep = "idle" | "uploaded" | "chunked" | "embedded" | "indexed";
@@ -148,7 +147,7 @@ export function IngestView() {
         formData.append('file', uploadedFile!.file);
         formData.append('workspaceId', selectedWorkspace);
 
-        response = await fetch(`${API_BASE}/workspace/ingest`, {
+        response = await fetch(`${API_BASE_URL}/api/workspace/ingest`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -160,7 +159,7 @@ export function IngestView() {
           ? { rawJson: sanitizedText, workspaceId: selectedWorkspace }
           : { rawText: sanitizedText, workspaceId: selectedWorkspace };
 
-        response = await fetch(`${API_BASE}/workspace/ingest`, {
+        response = await fetch(`${API_BASE_URL}/api/workspace/ingest`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

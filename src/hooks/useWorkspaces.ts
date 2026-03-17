@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
-const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+import { API_BASE_URL } from '@/config/api';
 
 interface Workspace {
   workspaceId: string;
@@ -25,7 +24,7 @@ interface CreateWorkspaceResponse {
 
 // API functions
 const fetchWorkspaces = async (): Promise<Workspace[]> => {
-  const response = await fetch(`${API_BASE}/workspace`, {
+  const response = await fetch(`${API_BASE_URL}/api/workspace`, {
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
     },
@@ -47,7 +46,7 @@ const fetchWorkspaces = async (): Promise<Workspace[]> => {
 };
 
 const createWorkspace = async (workspaceData: CreateWorkspaceRequest): Promise<CreateWorkspaceResponse> => {
-  const response = await fetch(`${API_BASE}/workspace`, {
+  const response = await fetch(`${API_BASE_URL}/api/workspace`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -73,7 +72,7 @@ const createWorkspace = async (workspaceData: CreateWorkspaceRequest): Promise<C
 
 // API functions for documents
 const fetchDocuments = async (workspaceId: string): Promise<DocumentItem[]> => {
-  const response = await fetch(`${API_BASE}/workspace/${workspaceId}/documents`, {
+  const response = await fetch(`${API_BASE_URL}/api/workspace/${workspaceId}/documents`, {
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
     },
@@ -97,7 +96,7 @@ const fetchDocuments = async (workspaceId: string): Promise<DocumentItem[]> => {
 };
 
 const deleteDocument = async ({ workspaceId, documentId }: { workspaceId: string; documentId: string }) => {
-  const response = await fetch(`${API_BASE}/workspace/document`, {
+  const response = await fetch(`${API_BASE_URL}/api/workspace/document`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -115,7 +114,7 @@ const deleteDocument = async ({ workspaceId, documentId }: { workspaceId: string
 };
 
 const deleteAllDocuments = async ({ workspaceId }: { workspaceId: string }) => {
-  const response = await fetch(`${API_BASE}/workspace/documents`, {
+  const response = await fetch(`${API_BASE_URL}/api/workspace/documents`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

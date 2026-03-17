@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-
-const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+import { API_BASE_URL } from '@/config/api';
 
 interface IngestResponse {
     meeting_id: string;
@@ -15,7 +14,7 @@ export const callIngestAPI = async (text: string) => {
     }
     const user = JSON.parse(userStr);
 
-    const response = await fetch(`${API_BASE}/robot/ingest`, {
+    const response = await fetch(`${API_BASE_URL}/api/robot/ingest`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

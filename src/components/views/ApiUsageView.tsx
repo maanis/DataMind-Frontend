@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Copy, Check, ChevronDown } from "lucide-react";
 import CodeBlock from "@/components/CodeBlock";
 import { useWorkspaces } from "@/hooks/useWorkspaces";
+import { API_BASE_URL } from "@/config/api";
 
 type CodeTab = "curl" | "javascript" | "python";
 
@@ -23,9 +24,10 @@ export function ApiUsageView() {
   }, [workspaces, selectedWorkspaceId]);
 
   const apiKey = selectedWorkspaceId || "YOUR_WORKSPACE_ID";
+  const queryEndpoint = `${API_BASE_URL}/api/query`;
 
   const codeExamples: Record<CodeTab, string> = {
-    curl: `curl -X POST https://f966-2409-40c0-1067-90cb-815f-4bf5-67f5-a99.ngrok-free.app/api/query \\
+    curl: `curl -X POST ${queryEndpoint} \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \\
   -d '{
@@ -34,7 +36,7 @@ export function ApiUsageView() {
   }'`,
 
     javascript: `const response = await fetch(
-  'https://f966-2409-40c0-1067-90cb-815f-4bf5-67f5-a99.ngrok-free.app/api/query',
+  '${queryEndpoint}',
   {
     method: 'POST',
     headers: {
@@ -54,7 +56,7 @@ console.log(data);`,
     python: `import requests
 
 response = requests.post(
-    'https://f966-2409-40c0-1067-90cb-815f-4bf5-67f5-a99.ngrok-free.app/api/query',
+    '${queryEndpoint}',
     headers={
         'Content-Type': 'application/json',
         'Authorization': 'Bearer YOUR_JWT_TOKEN',
@@ -115,7 +117,7 @@ print(data)`,
             POST
           </span>
           <code className="font-mono text-sm text-foreground">
-            /api/query
+            {queryEndpoint}
           </code>
         </div>
 

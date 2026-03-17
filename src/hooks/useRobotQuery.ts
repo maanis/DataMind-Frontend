@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-
-const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+import { API_BASE_URL } from '@/config/api';
 
 interface Source {
   id: string;
@@ -25,7 +24,7 @@ export const callRobotAPI = async (question: string) => {
     throw new Error('API key not found in user data');
   }
 
-  const response = await fetch(`${API_BASE}/robot/get-answer/${apiKey}`, {
+  const response = await fetch(`${API_BASE_URL}/api/robot/get-answer/${apiKey}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

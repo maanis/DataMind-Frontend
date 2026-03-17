@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWorkspaces, useDocuments } from "@/hooks/useWorkspaces";
+import { API_BASE_URL } from "@/config/api";
 
 interface Source { id: string; text: string; score: number; source: string; }
 interface PipelineStep { tool: string; message: string; }
@@ -62,8 +63,6 @@ function dedupeSteps(steps: PipelineStep[]): PipelineStep[] {
   steps.forEach((s, i) => { seen.set(cleanLabel(s.tool, s.message), i); });
   return steps.filter((s, i) => seen.get(cleanLabel(s.tool, s.message)) === i);
 }
-
-const API_BASE = import.meta.env.VITE_API_BASE || "/api";
 
 function normalizeSources(rawSources: any[] = []): Source[] {
   return rawSources
@@ -302,7 +301,7 @@ export function PlaygroundView() {
     if (!workspaceId) return;
     const token = localStorage.getItem("token") || "";
     try {
-      const res = await fetch(`${API_BASE}/query/memory/${workspaceId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/query/memory/${workspaceId}`, {
         headers: { "Authorization": `Bearer ${token}` },
       });
       if (res.ok) {
@@ -362,7 +361,7 @@ export function PlaygroundView() {
     const docId = selectedDocument === "all" ? null : selectedDocument;
 
     try {
-      const res = await fetch(`${API_BASE}/query`, {
+      const res = await fetch(`${API_BASE_URL}/api/query`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ question, workspaceId: selectedWorkspace, documentId: docId, stream: true }),
@@ -476,7 +475,7 @@ export function PlaygroundView() {
     }
     const token = localStorage.getItem("token") || "";
     try {
-      const res = await fetch(`${API_BASE}/query/clear-memory`, {
+      const res = await fetch(`${API_BASE_URL}/api/query/clear-memory`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ workspaceId: selectedWorkspace }),
